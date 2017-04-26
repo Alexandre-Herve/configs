@@ -7,7 +7,7 @@ call vundle#begin()
 
 
 " let Vundle manage Vundle
-" required! 
+" required!
 " tools
 Plugin 'gmarik/vundle'
 Plugin 'scrooloose/nerdtree'
@@ -26,7 +26,12 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 " Plugin 'flowtype/vim-flow'
 Plugin 'tpope/vim-dotenv'
-Plugin 'vim-scripts/taglist.vim'
+Plugin 'desert-warm-256'
+" Plugin 'vim-scripts/taglist.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/vim-tomorrow-theme'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'blueyed/vim-diminactive'
 
 " languages
 Plugin 'digitaltoad/vim-jade'
@@ -93,9 +98,11 @@ syntax on
 " If GUI mode
 set termencoding=utf8
 
-colorscheme default 
+set t_Co=256
+let g:solarized_termcolors=256
+set background=dark
+colorscheme solarized 
 
-set t_Co=16
 set ttymouse=xterm2
 set cursorline
 
@@ -261,7 +268,7 @@ map <leader>tm :tabmove
 
 
 " Tags update
-map <F12> :!ctags -R .<CR><CR>
+" map <F12> :!ctags -R .<CR><CR>
 " Toggle 'preview' in omni-completion
 map <C-F12> :let &completeopt = (&completeopt == "menu" ? "menu,preview" : "menu") <bar> echo &completeopt <cr>
 
@@ -345,7 +352,7 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
 " C / C++ (OmniCppComplete)
-autocmd FileType c,cpp map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+" autocmd FileType c,cpp map <F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " JAVA
 " See ftplugin/java.vim
@@ -412,20 +419,20 @@ nnoremap <silent> <F8> :TlistToggle<CR>
 
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
-augroup filetypedetect 
-  au BufNewFile,BufRead *.pig set filetype=pig syntax=pig 
-augroup END 
+augroup filetypedetect
+  au BufNewFile,BufRead *.pig set filetype=pig syntax=pig
+augroup END
 
 " Treat hql (hive) files as if it where standard sql:
 au BufNewFile,BufRead *.hql set filetype=sql
 
-" quickfix height 
+" quickfix height
 au FileType qf call AdjustWindowHeight(3, 20)
 function! AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 
-" preview window height 
+" preview window height
 set previewheight=20
 au BufEnter ?* call PreviewHeightWorkAround()
 func PreviewHeightWorkAround()
@@ -447,7 +454,10 @@ map <c-z> <nop>
 let g:flow#autoclose = 1
 let g:flow#errjump = 1
 
-autocmd BufRead,BufNewFile   *.ex highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-autocmd BufRead,BufNewFile   *.ex match OverLength /\%81v.\+/
+" autocmd BufRead,BufNewFile   *.ex highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+" autocmd BufRead,BufNewFile   *.ex match OverLength /\%81v.\+/
 
+:highlight ExtraWhitespace ctermbg=red guibg=red
+:match ExtraWhitespace /\s\+$/
 
+:set backupcopy=yes
