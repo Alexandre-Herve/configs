@@ -32,6 +32,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'blueyed/vim-diminactive'
+Plugin 'junegunn/fzf.vim'
 
 " languages
 Plugin 'digitaltoad/vim-jade'
@@ -43,9 +44,12 @@ Plugin 'evidens/vim-twig'
 Plugin 'pangloss/vim-javascript.git'
 Plugin 'mxw/vim-jsx'
 Plugin 'ElmCast/elm-vim'
-Plugin 'elixir-lang/vim-elixir'
+" Plugin 'elixir-lang/vim-elixir'
+Plugin 'elixir-editors/vim-elixir'
 Plugin 'slashmili/alchemist.vim'
 Plugin 'posva/vim-vue'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'peitalin/vim-jsx-typescript'
 
 " matrix
 Plugin 'uguu-org/vim-matrix-screensaver'
@@ -121,7 +125,7 @@ end
 " set tabstop=2
 
 " set expandtab
-" set autoindent "Indent (based on above line) when adding a line
+set autoindent "Indent (based on above line) when adding a line
 set ts=2 "A tab is 2 spaces
 " set softtabstop=2 "See 2 spaces per tab
 " set sw=2 "Indent is 2
@@ -415,6 +419,10 @@ set formatoptions+=r
 
 " }}}
 
+" {{{ | PLUGINS |
+let g:elm_format_autosave = 1
+" }}}
+
 nnoremap <silent> <F8> :TlistToggle<CR>
 
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
@@ -461,3 +469,17 @@ let g:flow#errjump = 1
 :match ExtraWhitespace /\s\+$/
 
 :set backupcopy=yes
+
+" https://jesseleite.com/posts/2/its-dangerous-to-vim-alone-take-fzf
+set rtp+=~/.fzf
+nmap <Leader>f :GFiles<CR>
+nmap <Leader>F :Files<CR>
+nmap <Leader>b :Buffers<CR>
+nmap <Leader>h :History<CR>
+nmap <Leader>t :BTags<CR>
+nmap <Leader>T :Tags<CR>
+nmap <Leader>l :BLines<CR>
+nmap <Leader>L :Lines<CR>
+nmap <Leader>' :Marks<CR>
+
+nmap <Leader>g gi<esc>
