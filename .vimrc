@@ -36,6 +36,9 @@ Plugin 'xolox/vim-easytags'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'yssl/QFEnter'
+Plugin 'vim-airline/vim-airline'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'Shougo/vimproc.vim'
 
 
 " Colors
@@ -53,6 +56,7 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'PProvost/vim-ps1'
 Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'Quramy/vim-js-pretty-template'
 " Plugin 'posva/vim-vue'
 " Plugin 'derekwyatt/vim-scala'
 " Plugin 'kchmck/vim-coffee-script'
@@ -138,8 +142,8 @@ set expandtab
 set copyindent
 set preserveindent
 set softtabstop=0
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " Editing layout
 " set formatoptions+=ln "See :h 'formatoptions' :)
@@ -187,14 +191,15 @@ set showcmd "Show beginning of normal commands (try d and see at bottom-right)
 
 " Auto-folding and auto-layout (e.g. for vim help files)
 set foldenable "Automatic folding
-set foldmethod=marker "Folds automatically between {{{ and }}}
+set foldmethod=syntax "Folds automatically between {{{ and }}} marker or by syntax
 set foldnestmax=2
+set foldlevel=1
 
 "}}}
 
 " ---| MORE COMPLEX FUNCTIONS |--- {{{
 
-" Updates 'Last change:' ; called on every buffer saving 
+" Updates 'Last change:' ; called on every buffer saving
 function! TimeStamp()
   let lines = line("$") < 10 ? line("$") : 10
   let pattern1 = '\([Ll]ast [Cc]hange\(s\=\)\(\s\=\):\s\+\)\d\d\d\d \w[a-zé][a-zû] \d\d'
@@ -302,6 +307,9 @@ imap <S-DOWN> <c-o>gj
 "vmap <C-j> :m'>+<cr>`<my`>mzgv`yo`z
 "vmap <C-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
+" :map a <Nop>
+nnoremap a za
+
 " Redefine keys so that the search result is in the middle of the screen
 "nmap n nzz
 "nmap N Nzz
@@ -370,16 +378,16 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 "autocmd FileType htm,html,htmldjango,xml,xhtml imap <c-l> <esc>l%a
 
 " RUBY
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+" autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+" autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+" autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+" autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
 " Django
-autocmd FileType htmldjango imap {% {%  %}<esc>2hi
-autocmd FileType htmldjango imap <leader>b <esc>:s/{% block \(.*\) %}/&\r{% endblock \1 %}<cr>:noh<cr>O
-autocmd FileType htmldjango imap <leader>e <esc>:s/{% \([a-zA-Z]\+\) \(.*\) %}/&\r{% end\1 \2 %}<cr>:noh<cr>O
-cmap ftd set filetype=htmldjango<cr>
+" autocmd FileType htmldjango imap {% {%  %}<esc>2hi
+" autocmd FileType htmldjango imap <leader>b <esc>:s/{% block \(.*\) %}/&\r{% endblock \1 %}<cr>:noh<cr>O
+" autocmd FileType htmldjango imap <leader>e <esc>:s/{% \([a-zA-Z]\+\) \(.*\) %}/&\r{% end\1 \2 %}<cr>:noh<cr>O
+" cmap ftd set filetype=htmldjango<cr>
 
 " Prototype (js framework) :
 "Useful only for azerty
@@ -488,29 +496,29 @@ nmap <Leader>' :Marks<CR>
 nmap <Leader>g gi<esc>
 
 " Tsyquyomi
-let g:tsuquyomi_completion_detail = 1
 autocmd FileType typescript setlocal completeopt+=menu,preview
 imap <S-Tab> <C-x><C-o>
-nmap <Leader>D :TsuTypeDefinition<CR>
-nmap <Leader>d :TsuDefinition<CR>
+nmap <Leader>D :TsuTypeDefinition<CR>:TsuTypeDefinition<CR>
+nmap <Leader>d :TsuDefinition<CR>:TsuDefinition<CR>
 nmap <Leader>r :TsuReferences<CR>
+nmap <Leader>I :TsuImport<CR>
+let g:tsuquyomi_completion_detail = 1
+let g:tsuquyomi_use_vimproc = 1
 
 
 " Syntastic
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
-
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
+let g:tsuquyomi_single_quote_import = 1
 set sessionoptions-=blank
-" let g:tsuquyomi_use_vimproc = 1
 
 let g:easytags_async = 1
-
 
 nmap <c-f> :NERDTreeFind<CR>
 
@@ -519,3 +527,29 @@ let g:qfenter_keymap = {}
 let g:qfenter_keymap.vopen = ['<C-v>']
 let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
 let g:qfenter_keymap.topen = ['<C-t>']
+
+" Jump to next closed fold
+nnoremap <silent> <leader>a :call NextClosedFold('j')<cr>
+function! NextClosedFold(dir)
+  let cmd = 'norm!z' . a:dir
+  let view = winsaveview()
+  let [l0, l, open] = [0, view.lnum, 1]
+  while l != l0 && open
+    exe cmd
+    let [l0, l] = [l, line('.')]
+    let open = foldclosed(l) < 0
+  endwhile
+  if open
+    call winrestview(view)
+  endif
+endfunction
+
+" Leave insert mode quickly
+if ! has('gui_running')
+  set ttimeoutlen=10
+  augroup FastEscape
+    autocmd!
+    au InsertEnter * set timeoutlen=0
+    au InsertLeave * set timeoutlen=1000
+  augroup END
+endif
