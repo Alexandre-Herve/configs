@@ -22,46 +22,46 @@ Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-repeat'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'kien/ctrlp.vim'
+" Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
-" Plugin 'flowtype/vim-flow'
 Plugin 'tpope/vim-dotenv'
 Plugin 'desert-warm-256'
-" Plugin 'vim-scripts/taglist.vim'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/vim-tomorrow-theme'
-Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'blueyed/vim-diminactive'
 Plugin 'junegunn/fzf.vim'
+Plugin 'vim-scripts/greplace.vim'
+Plugin 'pseewald/vim-anyfold'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'Quramy/tsuquyomi'
+Plugin 'yssl/QFEnter'
+
+
+" Colors
+Plugin 'neutaaaaan/iosvkem'
+Plugin 'altercation/vim-colors-solarized'
 
 " languages
-Plugin 'digitaltoad/vim-jade'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'groenewege/vim-less'
 Plugin 'tpope/vim-markdown'
-Plugin 'derekwyatt/vim-scala'
-Plugin 'evidens/vim-twig'
 Plugin 'pangloss/vim-javascript.git'
 Plugin 'mxw/vim-jsx'
 Plugin 'ElmCast/elm-vim'
-" Plugin 'elixir-lang/vim-elixir'
 Plugin 'elixir-editors/vim-elixir'
 Plugin 'slashmili/alchemist.vim'
-Plugin 'posva/vim-vue'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'peitalin/vim-jsx-typescript'
+Plugin 'PProvost/vim-ps1'
+Plugin 'ekalinin/Dockerfile.vim'
+" Plugin 'posva/vim-vue'
+" Plugin 'derekwyatt/vim-scala'
+" Plugin 'kchmck/vim-coffee-script'
+" Plugin 'digitaltoad/vim-jade'
+" Plugin 'groenewege/vim-less'
+" Plugin 'evidens/vim-twig'
 
 " matrix
 Plugin 'uguu-org/vim-matrix-screensaver'
-
-" Plugin 'majutsushi/tagbar'
-" Plugin 'xolox/vim-misc'
-" Plugin 'xolox/vim-easytags'
-" Plugin 'christoomey/vim-tmux-navigator'
-" Plugin 'scrooloose/syntastic'
-" Plugin 'leafgarland/typescript-vim'
-" Plugin 'tpope/vim-ragtag'
-" Plugin 'tpope/vim-rails'
 
 "Bundle 'sophacles/vim-bundle-sparkup'
 " My Bundles here:
@@ -105,12 +105,13 @@ set termencoding=utf8
 set t_Co=256
 let g:solarized_termcolors=256
 set background=dark
-colorscheme solarized 
+colorscheme solarized
+" colorscheme monokai_pro
 
 set ttymouse=xterm2
 set cursorline
 
-hi CursorLine cterm=none ctermbg=234 
+hi CursorLine cterm=none ctermbg=234
 if (&term =~ 'rxvt') "Vieux hack rxvt (...)
   so ~/.vim/sitaktif/rxvt.vim
 end
@@ -137,8 +138,8 @@ set expandtab
 set copyindent
 set preserveindent
 set softtabstop=0
-set shiftwidth=2
-set tabstop=2
+set shiftwidth=4
+set tabstop=4
 
 " Editing layout
 " set formatoptions+=ln "See :h 'formatoptions' :)
@@ -168,7 +169,8 @@ set history=1024 "Memorize 1024 last commands
 set updatetime=2000 "Update swap (and showmark plugin) every 2 sec
 
 " Mouse
-set mouse=a "Use mouse (all)
+" set mouse=a "Use mouse (all)
+set mouse=
 set ttymouse=xterm2 "Mouse dragging in iTerm
 
 " Command mode options
@@ -186,6 +188,7 @@ set showcmd "Show beginning of normal commands (try d and see at bottom-right)
 " Auto-folding and auto-layout (e.g. for vim help files)
 set foldenable "Automatic folding
 set foldmethod=marker "Folds automatically between {{{ and }}}
+set foldnestmax=2
 
 "}}}
 
@@ -244,7 +247,7 @@ map <leader>w <c-w>
 nmap <leader>; A;<esc>
 
 " go to next quicklist item easyly
-nmap <leader><leader>n :cnext<Enter>
+nmap <leader>n :cnext<Enter>
 
 
 " TODO find a useful mapping for Q
@@ -317,8 +320,8 @@ cno $H e ~/
 " cno $j e ./
 " cno $J e ./
 
-nmap <Tab> :tabnext<cr>
-nmap <S-Tab> :tabprev<cr>
+" nmap <Tab> :tabnext<cr>
+" nmap <S-Tab> :tabprev<cr>
 nmap <space> <pagedown>
 
 
@@ -483,3 +486,36 @@ nmap <Leader>L :Lines<CR>
 nmap <Leader>' :Marks<CR>
 
 nmap <Leader>g gi<esc>
+
+" Tsyquyomi
+let g:tsuquyomi_completion_detail = 1
+autocmd FileType typescript setlocal completeopt+=menu,preview
+imap <S-Tab> <C-x><C-o>
+nmap <Leader>D :TsuTypeDefinition<CR>
+nmap <Leader>d :TsuDefinition<CR>
+nmap <Leader>r :TsuReferences<CR>
+
+
+" Syntastic
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
+set sessionoptions-=blank
+" let g:tsuquyomi_use_vimproc = 1
+
+let g:easytags_async = 1
+
+
+nmap <c-f> :NERDTreeFind<CR>
+
+" Plugin 'yssl/QFEnter'
+let g:qfenter_keymap = {}
+let g:qfenter_keymap.vopen = ['<C-v>']
+let g:qfenter_keymap.hopen = ['<C-CR>', '<C-s>', '<C-x>']
+let g:qfenter_keymap.topen = ['<C-t>']
