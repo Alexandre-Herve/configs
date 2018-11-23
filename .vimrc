@@ -13,10 +13,10 @@ Plugin 'gmarik/vundle'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-dispatch'
+" Plugin 'tpope/vim-dispatch'
 Plugin 'vim-scripts/comments.vim'
 Plugin 'ervandew/supertab'
-Plugin 'vim-scripts/Align'
+" Plugin 'vim-scripts/Align'
 Plugin 'tmhedberg/matchit'
 Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-repeat'
@@ -24,21 +24,20 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-dotenv'
 Plugin 'desert-warm-256'
-Plugin 'chriskempson/vim-tomorrow-theme'
+" Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'blueyed/vim-diminactive'
 Plugin 'junegunn/fzf.vim'
 Plugin 'vim-scripts/greplace.vim'
 Plugin 'pseewald/vim-anyfold'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-easytags'
+" Plugin 'xolox/vim-misc'
+" Plugin 'xolox/vim-easytags'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'yssl/QFEnter'
 Plugin 'vim-airline/vim-airline'
 Plugin 'jiangmiao/auto-pairs'
-Plugin 'Shougo/vimproc.vim'
+" Plugin 'Shougo/vimproc.vim'
 
 
 " Colors
@@ -56,7 +55,8 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'PProvost/vim-ps1'
 Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'Quramy/vim-js-pretty-template'
+Plugin 'tpope/vim-dotenv'
+" Plugin 'Quramy/vim-js-pretty-template'
 " Plugin 'posva/vim-vue'
 " Plugin 'derekwyatt/vim-scala'
 " Plugin 'kchmck/vim-coffee-script'
@@ -114,8 +114,9 @@ colorscheme solarized
 
 set ttymouse=xterm2
 set cursorline
+set cursorcolumn
 
-hi CursorLine cterm=none ctermbg=234
+" hi CursorLine cterm=none ctermbg=234
 if (&term =~ 'rxvt') "Vieux hack rxvt (...)
   so ~/.vim/sitaktif/rxvt.vim
 end
@@ -131,7 +132,7 @@ end
 
 " set expandtab
 set autoindent "Indent (based on above line) when adding a line
-set ts=2 "A tab is 2 spaces
+set ts=4 "A tab is 2 spaces
 " set softtabstop=2 "See 2 spaces per tab
 " set sw=2 "Indent is 2
 set nosmartindent "Cindent is better
@@ -142,8 +143,8 @@ set expandtab
 set copyindent
 set preserveindent
 set softtabstop=0
-set shiftwidth=2
-set tabstop=2
+set shiftwidth=4
+set tabstop=4
 
 " Editing layout
 " set formatoptions+=ln "See :h 'formatoptions' :)
@@ -183,8 +184,8 @@ set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.ps,*.pdf,*.cmo,*.cmi,*.cmx "Don't c
 set cmdheight=1 "Command line height
 
 set laststatus=2 "When to show status line (2=always)
-set ruler "Show line,col in statusbar
-set number "Show lines
+" set ruler "Show line,col in statusbar
+" set number "Show lines
 set showmode "Show mode in status (insertion, visual...)
 set showcmd "Show beginning of normal commands (try d and see at bottom-right)
 
@@ -193,7 +194,7 @@ set showcmd "Show beginning of normal commands (try d and see at bottom-right)
 set foldenable "Automatic folding
 set foldmethod=syntax "Folds automatically between {{{ and }}} marker or by syntax
 set foldnestmax=2
-set foldlevel=1
+set foldlevel=2
 
 "}}}
 
@@ -221,7 +222,7 @@ endfunction
 " ---| MAPPINGS |--- {{{
 
 " open grunt in vrtical side pane using tmux
-nmap <C-°> <C-a>
+" nmap <C-°> <C-a>
 
 " maximize split
 let t:maximized = "false"
@@ -262,9 +263,9 @@ imap   \<espace insécable\>
 " Remove search hilights
 map __ :noh<CR>
 " correct this shitty typo on exit :]
-nmap q: :q
+" nmap q: :q
 
-nmap :vps :vsp
+" nmap :vps :vsp
 
 "map ² <ESC>
 
@@ -503,7 +504,7 @@ nmap <Leader>d :TsuDefinition<CR>:TsuDefinition<CR>
 nmap <Leader>r :TsuReferences<CR>
 nmap <Leader>I :TsuImport<CR>
 let g:tsuquyomi_completion_detail = 1
-let g:tsuquyomi_use_vimproc = 1
+let g:tsuquyomi_use_vimproc = 0
 
 
 " Syntastic
@@ -518,7 +519,7 @@ let g:syntastic_typescript_checkers = ['tsuquyomi', 'tslint']
 let g:tsuquyomi_single_quote_import = 1
 set sessionoptions-=blank
 
-let g:easytags_async = 1
+" let g:easytags_async = 1
 
 nmap <c-f> :NERDTreeFind<CR>
 
@@ -553,3 +554,20 @@ if ! has('gui_running')
     au InsertLeave * set timeoutlen=1000
   augroup END
 endif
+
+" search
+nnoremap ( :nohlsearch<CR>
+set hlsearch
+
+
+" airline
+let g:airline_section_x = ''
+let g:airline_section_y = ''
+let g:airline_section_z = ''
+let g:airline_section_b = ''
+
+
+" fugitive
+nmap <leader>g :Ggrep! "\b<C-R><C-W>\b"<CR>
+nmap F :Glgrep! "\b<C-R><C-W>\b"<CR>:lopen<CR>
+nmap f :Glgrep<space>
