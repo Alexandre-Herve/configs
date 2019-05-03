@@ -36,13 +36,16 @@ Plugin 'vim-syntastic/syntastic'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'yssl/QFEnter'
 Plugin 'vim-airline/vim-airline'
-Plugin 'jiangmiao/auto-pairs'
+" Plugin 'jiangmiao/auto-pairs'
 " Plugin 'Shougo/vimproc.vim'
 
 
 " Colors
 Plugin 'neutaaaaan/iosvkem'
 Plugin 'altercation/vim-colors-solarized'
+" Plugin 'vim-scripts/Ambient-Color-Scheme'
+" Plugin 'fatih/molokai'
+" Plugin 'DankNeon/vim'
 
 " languages
 Plugin 'tpope/vim-markdown'
@@ -52,10 +55,12 @@ Plugin 'ElmCast/elm-vim'
 Plugin 'elixir-editors/vim-elixir'
 Plugin 'slashmili/alchemist.vim'
 Plugin 'leafgarland/typescript-vim'
-Plugin 'peitalin/vim-jsx-typescript'
+" Plugin 'peitalin/vim-jsx-typescript'
 Plugin 'PProvost/vim-ps1'
 Plugin 'ekalinin/Dockerfile.vim'
 Plugin 'tpope/vim-dotenv'
+Plugin 'ianks/vim-tsx'
+Plugin 'reasonml-editor/vim-reason-plus'
 " Plugin 'Quramy/vim-js-pretty-template'
 " Plugin 'posva/vim-vue'
 " Plugin 'derekwyatt/vim-scala'
@@ -106,11 +111,10 @@ syntax on
 " If GUI mode
 set termencoding=utf8
 
-set t_Co=256
+" set t_Co=256
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
-" colorscheme monokai_pro
 
 set ttymouse=xterm2
 set cursorline
@@ -254,6 +258,9 @@ nmap <leader>; A;<esc>
 
 " go to next quicklist item easyly
 nmap <leader>n :cnext<Enter>
+
+" go to next location list item easyly
+nmap <leader>m :lnext<Enter>
 
 
 " TODO find a useful mapping for Q
@@ -498,6 +505,7 @@ nmap <Leader>g gi<esc>
 
 " Tsyquyomi
 autocmd FileType typescript setlocal completeopt+=menu,preview
+autocmd FileType typescript nmap <buffer> t : <C-u>echo tsuquyomi#hint()<CR>
 imap <S-Tab> <C-x><C-o>
 nmap <Leader>D :TsuTypeDefinition<CR>:TsuTypeDefinition<CR>
 nmap <Leader>d :TsuDefinition<CR>:TsuDefinition<CR>
@@ -505,6 +513,8 @@ nmap <Leader>r :TsuReferences<CR>
 nmap <Leader>I :TsuImport<CR>
 let g:tsuquyomi_completion_detail = 1
 let g:tsuquyomi_use_vimproc = 0
+let g:tsuquyomi_completion_preview = 1
+let g:tsuquyomi_baseurl_import_path = 1
 
 
 " Syntastic
@@ -568,6 +578,14 @@ let g:airline_section_b = ''
 
 
 " fugitive
-nmap <leader>g :Ggrep! "\b<C-R><C-W>\b"<CR>
 nmap F :Glgrep! "\b<C-R><C-W>\b"<CR>:lopen<CR>
 nmap f :Glgrep<space>
+
+" To allow project specific vim configs
+set exrc
+set secure
+
+
+" diminactive
+:hi ColorColumn ctermbg=0 guibg=#eee8d5
+
