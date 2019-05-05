@@ -3,8 +3,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " tools
 Plug 'Lokaltog/vim-easymotion'
+Plug 'airblade/vim-gitgutter'
 Plug 'blueyed/vim-diminactive'
 Plug 'junegunn/fzf.vim'
+Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -12,14 +14,17 @@ Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-scripts/comments.vim'
 
 " languages
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'ianks/vim-tsx'
 Plug 'leafgarland/typescript-vim'
-Plug 'mxw/vim-jsx'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-dotenv'
 Plug 'tpope/vim-markdown'
@@ -30,9 +35,9 @@ Plug 'altercation/vim-colors-solarized'
 call plug#end()
 
 " colors config
-let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
+let g:airline_theme='solarized'
 
 " various
 cabbr <expr> %% expand('%:p:h')
@@ -50,16 +55,27 @@ nmap <space> <pagedown>
 nnoremap Q <nop>
 
 set autoindent
-set autoindent
+set autoread
+set backspace=start,indent,eol "Fix backspace
 set backupcopy=yes
+set copyindent
 set cursorcolumn
 set cursorline
+set expandtab
+set history=1024 "Memorize 1024 last commands
 set linebreak
+set listchars+=tab:>·,trail:·,extends:~,nbsp:¤
+set modeline
 set mouse=
+set preserveindent
+set shiftwidth=2
 set showcmd "Show beginning of normal commands (try d and see at bottom-right)
 set showmode "Show mode in status (insertion, visual...)
+set so=8 "When moving vertical, start scrolling 4 lines before reaching bottom
+set softtabstop=0
+set tabstop=4
 set termencoding=utf8
-set ts=4
+set ts=2
 
 " parenthesis
 set showmatch
@@ -91,11 +107,11 @@ set hlsearch
 set wrapscan "Continue to top after reaching bottom
 set incsearch "See results of search step by step
 
-" Windows
+" windows
 set splitright " Vsplit at right
 set previewheight=8 "Height of preview menu (Omni-completion)
 
-" Leave insert mode quickly
+" leave insert mode quickly
 if ! has('gui_running')
   set ttimeoutlen=10
   augroup FastEscape
@@ -105,6 +121,16 @@ if ! has('gui_running')
   augroup END
 endif
 
+" remove auto comment insertion on new line
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+" emmet
+let g:user_emmet_leader_key='<C-i>'
+let g:user_emmet_settings = {
+\  'javascript' : {
+\      'extends' : 'jsx',
+\  },
+\}
 
 """""""""""""""""""""""""""""""""""""""
 " 				coc.vim               "
@@ -112,14 +138,14 @@ endif
 " if hidden is not set, TextEdit might fail.
 set hidden
 
-" Some servers have issues with backup files, see #649
+" some servers have issues with backup files, see #649
 set nobackup
 set nowritebackup
 
-" Better display for messages
-set cmdheight=2
+" better display for messages
+set cmdheight=1
 
-" Smaller updatetime for CursorHold & CursorHoldI
+" smaller updatetime for CursorHold & CursorHoldI
 set updatetime=300
 
 " don't give |ins-completion-menu| messages.
@@ -227,8 +253,8 @@ nnoremap <silent> <leader>c  :<C-u>CocList commands<cr>
 " Search workspace symbols
 " nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 " nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
