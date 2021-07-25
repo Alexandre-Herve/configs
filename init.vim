@@ -7,7 +7,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'blueyed/vim-diminactive'
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
-Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tmhedberg/matchit'
@@ -16,8 +16,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-scripts/comments.vim'
 
 " languages
@@ -28,16 +26,17 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-dotenv'
 Plug 'tpope/vim-markdown'
+Plug 'jparise/vim-graphql'
+Plug 'vim-python/python-syntax'
 
 " colors
-Plug 'altercation/vim-colors-solarized'
+Plug 'overcache/NeoSolarized'
 
 call plug#end()
 
 " colors config
-set background=dark
-colorscheme solarized
-let g:airline_theme='solarized'
+set termguicolors
+colorscheme NeoSolarized
 
 " various
 cabbr <expr> %% expand('%:p:h')
