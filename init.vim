@@ -28,6 +28,9 @@ Plug 'tpope/vim-dotenv'
 Plug 'tpope/vim-markdown'
 Plug 'jparise/vim-graphql'
 Plug 'vim-python/python-syntax'
+Plug 'chrisbra/csv.vim'
+Plug 'hashivim/vim-terraform'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " colors
 Plug 'overcache/NeoSolarized'
@@ -37,6 +40,7 @@ call plug#end()
 " colors config
 set termguicolors
 colorscheme NeoSolarized
+set background=light
 
 " various
 cabbr <expr> %% expand('%:p:h')
@@ -257,3 +261,21 @@ nnoremap <silent> <leader>c  :<C-u>CocList commands<cr>
 " nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 " nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+autocmd BufWritePre *.tf call terraform#fmt()
+
+" golang
+nmap <leader>gr <Plug>(go-run)
+nmap <leader>gc <Plug>(go-build)
+nmap <leader>gt :GoTest!<cr>
+nmap <leader>gl <Plug>(go-lint)
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+"let g:deoplete#enable_at_startup = 1
+"let g:deoplete#sources#go#gocode_binary = '~/go/bin/gocode'
+
+" This prevents go autofmt to refold everything after each save
+let g:go_fmt_experimental = 1
+let g:go_fmt_command = "goimports"
