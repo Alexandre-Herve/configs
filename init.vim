@@ -17,6 +17,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'vim-scripts/comments.vim'
+Plug 'github/copilot.vim'
 
 " languages
 Plug 'ekalinin/Dockerfile.vim'
@@ -31,6 +32,7 @@ Plug 'vim-python/python-syntax'
 Plug 'chrisbra/csv.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'kevinoid/vim-jsonc'
 
 " colors
 Plug 'overcache/NeoSolarized'
@@ -183,9 +185,12 @@ nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
 nmap <silent> <leader>d <Plug>(coc-definition)
+nmap <silent> <leader>vsd :call CocAction('jumpDefinition', 'vsplit')<CR>
+nmap <silent> <leader>sd :call CocAction('jumpDefinition', 'split')<CR>
 nmap <silent> <leader>D <Plug>(coc-type-definition)
 nmap <silent> <leader>i <Plug>(coc-implementation)
 nmap <silent> <leader>r <Plug>(coc-references)
+nmap <silent> <leader>f <Cmd>CocList mru<CR>
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -205,8 +210,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+"xmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -279,3 +284,10 @@ let g:go_info_mode='gopls'
 " This prevents go autofmt to refold everything after each save
 let g:go_fmt_experimental = 1
 let g:go_fmt_command = "goimports"
+
+autocmd BufNewFile,BufRead *.json setl ft=jsonc
+
+:nmap <leader>e <Cmd>CocCommand explorer<CR>
+
+"hi! CocErrorSign guifg=White guibg=#ff0000
+"hi! CocErrorSign ctermfg=White
