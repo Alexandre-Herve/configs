@@ -17,6 +17,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'vim-scripts/comments.vim'
+Plug 'dense-analysis/ale'
 
 " languages
 Plug 'ekalinin/Dockerfile.vim'
@@ -33,14 +34,14 @@ Plug 'hashivim/vim-terraform'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " colors
-Plug 'overcache/NeoSolarized'
+"Plug 'overcache/NeoSolarized'
 
 call plug#end()
 
 " colors config
 set termguicolors
-colorscheme NeoSolarized
-set background=light
+"colorscheme NeoSolarized
+"set background=light
 
 " various
 cabbr <expr> %% expand('%:p:h')
@@ -279,3 +280,11 @@ let g:go_info_mode='gopls'
 " This prevents go autofmt to refold everything after each save
 let g:go_fmt_experimental = 1
 let g:go_fmt_command = "goimports"
+
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'typescript': ['prettier'],
+\   'css': ['prettier'],
+\}
+
+let g:ale_fix_on_save = 1
