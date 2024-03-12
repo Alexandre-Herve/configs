@@ -5,8 +5,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'Lokaltog/vim-easymotion'
 Plug 'airblade/vim-gitgutter'
 Plug 'blueyed/vim-diminactive'
-Plug 'junegunn/fzf.vim'
-Plug 'mattn/emmet-vim'
+"Plug 'mattn/emmet-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -18,6 +17,13 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'vim-scripts/comments.vim'
 Plug 'dense-analysis/ale'
+Plug 'github/copilot.vim'
+Plug 'junegunn/fzf', {'dir': '~/.fzf','do': './install --all'}
+Plug 'junegunn/fzf.vim' " needed for previews
+Plug 'antoinemadec/coc-fzf'
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+"Plug 'untitled-ai/jupyter_ascending.vim'
 
 " languages
 Plug 'ekalinin/Dockerfile.vim'
@@ -32,6 +38,10 @@ Plug 'vim-python/python-syntax'
 Plug 'chrisbra/csv.vim'
 Plug 'hashivim/vim-terraform'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'kevinoid/vim-jsonc'
+Plug 'elixir-editors/vim-elixir'
+Plug 'jxnblk/vim-mdx-js'
+"Plug 'findango/vim-mdx'
 
 " colors
 "Plug 'overcache/NeoSolarized'
@@ -39,9 +49,9 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 " colors config
-set termguicolors
-"colorscheme NeoSolarized
-"set background=light
+"set termguicolors
+"colorscheme solarized
+set background=light
 
 " various
 cabbr <expr> %% expand('%:p:h')
@@ -92,14 +102,14 @@ nmap <Leader>h :History<CR>
 
 " fugitive
 nmap F :Glgrep! "\b<C-R><C-W>\b"<CR>:lopen<CR>
-nmap f :Glgrep<space>
 
 " allow project specific vim configs
 set exrc
 set secure
 
 " diminactive
-hi ColorColumn ctermbg=0 guibg=#eee8d5k
+let g:diminactive_use_colorcolumn = 0
+"hi ColorColumn ctermbg=0 guibg=#eee8d5
 
 " trailing white spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -206,8 +216,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+"xmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -234,16 +244,16 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 
 " Add diagnostic info for https://github.com/itchyny/lightline.vim
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status'
-      \ },
-      \ }
+"let g:lightline = {
+      "\ 'colorscheme': 'wombat',
+      "\ 'active': {
+      "\   'left': [ [ 'mode', 'paste' ],
+      "\             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+      "\ },
+      "\ 'component_function': {
+      "\   'cocstatus': 'coc#status'
+      "\ },
+      "\ }
 
 " Using CocList
 " Show all diagnostics
@@ -288,3 +298,41 @@ let g:ale_fixers = {
 \}
 
 let g:ale_fix_on_save = 1
+autocmd BufNewFile,BufRead *.json setl ft=jsonc
+
+:nmap <leader>e <Cmd>CocCommand explorer<CR>
+
+"hi! CocErrorSign guifg=White guibg=#ff0000
+"hi! CocErrorSign ctermfg=White
+
+
+" FZF mappings
+nnoremap <silent> f<space> :<C-u>CocFzfList<CR>
+nnoremap <silent> fa       :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent> fb       :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> fc       :<C-u>CocFzfList commands<CR>
+nnoremap <silent> fe       :<C-u>CocFzfList extensions<CR>
+nnoremap <silent> fl       :<C-u>CocFzfList location<CR>
+nnoremap <silent> fo       :<C-u>CocFzfList outline<CR>
+"nnoremap <silent> <space>s       :<C-u>CocFzfList symbols<CR>
+nnoremap <silent> ff       :<C-u>CocFzfList files<CR>
+nnoremap <silent> fm       :<C-u>CocFzfList mru<CR>
+nnoremap <silent> fq       :<C-u>CocFzfList quickfix<CR>
+nnoremap <silent> fp       :<C-u>CocFzfListResume<CR>
+
+nmap <leader>1 :call coc#config('diagnostic.messageTarget', 'echo')<CR>
+nmap <leader>2 :call coc#config('diagnostic.messageTarget', 'float')<CR>
+
+hi Search cterm=NONE ctermfg=lightgrey ctermbg=blue
+
+au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
+au BufRead,BufNewFile *.eex,*.heex,*.leex,*.sface,*.lexs set filetype=eelixir
+au BufRead,BufNewFile mix.lock set filetype=elixir
+
+nmap <C-v> :NERDTreeToggle<CR>
+
+
+
+"nmap <space><space>k <Plug>JupyterRestart
+"nmap <space><space>j <Plug>JupyterExecute
+"nmap <space><space>J <Plug>JupyterExecuteAll
