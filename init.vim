@@ -41,7 +41,9 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'kevinoid/vim-jsonc'
 Plug 'elixir-editors/vim-elixir'
 Plug 'jxnblk/vim-mdx-js'
+Plug 'raivivek/vim-snakemake'
 "Plug 'findango/vim-mdx'
+
 
 " colors
 "Plug 'overcache/NeoSolarized'
